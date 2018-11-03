@@ -32,10 +32,16 @@ const WorldScene = new Phaser.Class({
   },
 
   preload: function () {
-
+    this.load.image("tiles", "/assets/maps/map-1.png");
+    this.load.tilemapTiledJSON("map", "/assets/maps/maps-1.json");  
   },
 
   create: function () {
+    const map = this.make.tilemap({ key: "map" });
+    const tileset = map.addTilesetImage('map-1.png', 'tiles');
+    const ground = map.createStaticLayer('ground', tileset, 0, 0);
+    const trees = map.createStaticLayer('trees', tileset, 0, 0);
+
     player = this.physics.add.sprite(50, 100, 'player', 0);
     player.setCollideWorldBounds(true);
 
@@ -95,10 +101,9 @@ const WorldScene = new Phaser.Class({
 
 const config = {
   type: Phaser.AUTO,
-  parent: 'content',
-  width: 320,
-  height: 240,
-  zoom: 2,
+  parent: 'content', // ID of dom to add to
+  width: 800,
+  height: 600,
   pixelArt: true,
   physics: {
     default: 'arcade',
