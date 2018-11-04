@@ -102,6 +102,7 @@ const WorldScene = new Phaser.Class({
     const camera = this.cameras.main;
     camera.startFollow(player);
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+    camera.zoom = 2;
 
     // Set up the arrows to control the camera
     cursors = this.input.keyboard.createCursorKeys();
@@ -120,6 +121,7 @@ const WorldScene = new Phaser.Class({
     this.input.keyboard.once("keydown_D", event => {
       // Turn on physics debugging to show player's hitbox
       this.physics.world.createDebugGraphic();
+      console.log(this.physics.world);
   
       // Create worldLayer collision graphic above the player, but below the help text
       const graphics = this.add
