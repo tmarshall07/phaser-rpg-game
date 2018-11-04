@@ -11,6 +11,7 @@ const BootScene = new Phaser.Class({
   // Load game-wide assets
   preload: function () {
     this.load.atlas('atlas', '../assets/characters/kat/atlas.png', '../assets/characters/kat/atlas.json');
+    this.load.spritesheet('scientist', '../assets/characters/scientist/scientist.png');
   },
 
   // Start up the world scene
@@ -69,26 +70,29 @@ const WorldScene = new Phaser.Class({
     // animation manager so any sprite can access them.
     const anims = this.anims;
     anims.create({
-      key: "misa-left-walk",
-      frames: anims.generateFrameNames("atlas", { prefix: "misa-left-walk.", start: 0, end: 3, zeroPad: 3 }),
+      key: 'walk-left',
+      frames: this.anims.generateFrameNumbers('scientist', {
+        start: 5,
+        end: 6
+      }),
       frameRate: 10,
       repeat: -1
     });
     anims.create({
-      key: "misa-right-walk",
-      frames: anims.generateFrameNames("atlas", { prefix: "misa-right-walk.", start: 0, end: 3, zeroPad: 3 }),
+      key: "walk-front",
+      frames: this.anims.generateFrameNumbers('scientist', {
+        start: 0,
+        end: 1,
+      }),
       frameRate: 10,
       repeat: -1
     });
     anims.create({
-      key: "misa-front-walk",
-      frames: anims.generateFrameNames("atlas", { prefix: "misa-front-walk.", start: 0, end: 3, zeroPad: 3 }),
-      frameRate: 10,
-      repeat: -1
-    });
-    anims.create({
-      key: "misa-back-walk",
-      frames: anims.generateFrameNames("atlas", { prefix: "misa-back-walk.", start: 0, end: 3, zeroPad: 3 }),
+      key: "walk-back",
+      frames: this.anims.generateFrameNumbers('scientist', {
+        start: 1,
+        end: 2,
+      }),
       frameRate: 10,
       repeat: -1
     });
@@ -155,21 +159,21 @@ const WorldScene = new Phaser.Class({
 
     // Update the animation last and give left/right animations precedence over up/down animations
     if (cursors.left.isDown) {
-      player.anims.play("misa-left-walk", true);
+      player.anims.play("walk-left", true);
     } else if (cursors.right.isDown) {
-      player.anims.play("misa-right-walk", true);
+      player.anims.play("walk-right", true);
     } else if (cursors.up.isDown) {
-      player.anims.play("misa-back-walk", true);
+      player.anims.play("walk-up", true);
     } else if (cursors.down.isDown) {
-      player.anims.play("misa-front-walk", true);
+      player.anims.play("walk-down", true);
     } else {
       player.anims.stop();
 
       // If we were moving, pick and idle frame to use
-      if (prevVelocity.x < 0) player.setTexture("atlas", "misa-left");
-      else if (prevVelocity.x > 0) player.setTexture("atlas", "misa-right");
-      else if (prevVelocity.y < 0) player.setTexture("atlas", "misa-back");
-      else if (prevVelocity.y > 0) player.setTexture("atlas", "misa-front");
+      if (prevVelocity.x < 0) player.setTexture('scientist', 2);
+      else if (prevVelocity.x > 0) player.setTexture('scientist', 2);
+      else if (prevVelocity.y < 0) player.setTexture('scientist', 1);
+      else if (prevVelocity.y > 0) player.setTexture('scientist', 0);
     }
   }
 });
