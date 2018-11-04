@@ -81,15 +81,6 @@ const WorldScene = new Phaser.Class({
       repeat: -1
     });
     anims.create({
-      key: 'walk-right',
-      frames: this.anims.generateFrameNumbers('scientist', {
-        start: 8,
-        end: 9
-      }),
-      frameRate: 5,
-      repeat: -1
-    });
-    anims.create({
       key: "walk-down",
       frames: this.anims.generateFrameNumbers('scientist', {
         start: 4,
@@ -171,8 +162,10 @@ const WorldScene = new Phaser.Class({
     // Update the animation last and give left/right animations precedence over up/down animations
     if (cursors.left.isDown) {
       player.anims.play("walk-left", true);
+      player.flipX = false;
     } else if (cursors.right.isDown) {
-      player.anims.play("walk-right", true);
+      player.anims.play("walk-left", true);
+      player.flipX = true;
     } else if (cursors.up.isDown) {
       player.anims.play("walk-up", true);
     } else if (cursors.down.isDown) {
