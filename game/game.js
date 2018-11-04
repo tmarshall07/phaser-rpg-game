@@ -10,7 +10,6 @@ const BootScene = new Phaser.Class({
 
   // Load game-wide assets
   preload: function () {
-    this.load.atlas('atlas', '../assets/characters/kat/atlas.png', '../assets/characters/kat/atlas.json');
     this.load.spritesheet('scientist', '../assets/characters/scientist/scientist.png', {
       frameWidth: 24,
       frameHeight: 24
@@ -63,7 +62,7 @@ const WorldScene = new Phaser.Class({
     const spawnPoint = map.findObject('objects', obj => obj.name === 'Spawn Point');
 
     player = this.physics.add
-      .sprite(spawnPoint.x, spawnPoint.y, 'atlas', 'misa-front')
+      .sprite(spawnPoint.x, spawnPoint.y, 'scientist')
       .setSize(30, 40)
       .setOffset(0, 24);
     
@@ -75,28 +74,37 @@ const WorldScene = new Phaser.Class({
     anims.create({
       key: 'walk-left',
       frames: this.anims.generateFrameNumbers('scientist', {
-        start: 5,
-        end: 6
+        start: 8,
+        end: 9
       }),
-      frameRate: 10,
+      frameRate: 5,
       repeat: -1
     });
     anims.create({
-      key: "walk-front",
+      key: 'walk-right',
       frames: this.anims.generateFrameNumbers('scientist', {
-        start: 0,
-        end: 1,
+        start: 8,
+        end: 9
       }),
-      frameRate: 10,
+      frameRate: 5,
       repeat: -1
     });
     anims.create({
-      key: "walk-back",
+      key: "walk-down",
       frames: this.anims.generateFrameNumbers('scientist', {
-        start: 1,
-        end: 2,
+        start: 4,
+        end: 5,
       }),
-      frameRate: 10,
+      frameRate: 5,
+      repeat: -1
+    });
+    anims.create({
+      key: "walk-up",
+      frames: this.anims.generateFrameNumbers('scientist', {
+        start: 6,
+        end: 7,
+      }),
+      frameRate: 5,
       repeat: -1
     });
     
@@ -137,7 +145,7 @@ const WorldScene = new Phaser.Class({
   },
 
   update: function (time, delta) {
-    const speed = 175;
+    const speed = 100;
     const prevVelocity = player.body.velocity.clone();
 
     // Stop any previous movement from the last frame
@@ -171,13 +179,14 @@ const WorldScene = new Phaser.Class({
       player.anims.play("walk-down", true);
     } else {
       player.anims.stop();
-
-      // If we were moving, pick and idle frame to use
-      if (prevVelocity.x < 0) player.setTexture('scientist', 2);
-      else if (prevVelocity.x > 0) player.setTexture('scientist', 2);
-      else if (prevVelocity.y < 0) player.setTexture('scientist', 1);
-      else if (prevVelocity.y > 0) player.setTexture('scientist', 0);
     }
+
+    //   // If we were moving, pick and idle frame to use
+    //   if (prevVelocity.x < 0) player.setTexture('scientist', 2);
+    //   else if (prevVelocity.x > 0) player.setTexture('scientist', 2);
+    //   else if (prevVelocity.y < 0) player.setTexture('scientist', 1);
+    //   else if (prevVelocity.y > 0) player.setTexture('scientist', 0);
+    // }
   }
 });
 
