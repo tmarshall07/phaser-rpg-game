@@ -11,7 +11,10 @@ const BootScene = new Phaser.Class({
   // Load game-wide assets
   preload: function () {
     this.load.atlas('atlas', '../assets/characters/kat/atlas.png', '../assets/characters/kat/atlas.json');
-    this.load.spritesheet('scientist', '../assets/characters/scientist/scientist.png');
+    this.load.spritesheet('scientist', '../assets/characters/scientist/scientist.png', {
+      frameWidth: 24,
+      frameHeight: 24
+    });
   },
 
   // Start up the world scene
@@ -34,8 +37,8 @@ const WorldScene = new Phaser.Class({
   },
 
   preload: function () {
-    this.load.image('tiles', '../assets/maps/map-1.png');
-    this.load.tilemapTiledJSON('map', '../assets/maps/map-1.json');  
+    this.load.image('tiles', '../assets/maps/map-2.png');
+    this.load.tilemapTiledJSON('map', '../assets/maps/map-2.json');  
   },
 
   create: function () {
@@ -43,7 +46,7 @@ const WorldScene = new Phaser.Class({
     const map = this.make.tilemap({ key: 'map' });
 
     // Tileset used for this map
-    const tileset = map.addTilesetImage('map-1', 'tiles');
+    const tileset = map.addTilesetImage('map-2', 'tiles');
     
     // Map layers
     const belowLayer = map.createStaticLayer('below', tileset, 0, 0);
