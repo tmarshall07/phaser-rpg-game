@@ -36,8 +36,8 @@ const WorldScene = new Phaser.Class({
   },
 
   preload: function () {
-    this.load.image('tiles', '../assets/maps/map-2.png');
-    this.load.tilemapTiledJSON('map', '../assets/maps/map-2.json');  
+    this.load.image('tiles', '../assets/tilesets/terrain.png');
+    this.load.tilemapTiledJSON('map', '../assets/maps/map-3.json');  
   },
 
   create: function () {
@@ -45,7 +45,7 @@ const WorldScene = new Phaser.Class({
     const map = this.make.tilemap({ key: 'map' });
 
     // Tileset used for this map
-    const tileset = map.addTilesetImage('map-2', 'tiles');
+    const tileset = map.addTilesetImage('terrain', 'tiles');
     
     // Map layers
     const belowLayer = map.createStaticLayer('below', tileset, 0, 0);
@@ -63,8 +63,7 @@ const WorldScene = new Phaser.Class({
 
     player = this.physics.add
       .sprite(spawnPoint.x, spawnPoint.y, 'scientist')
-      .setSize(30, 40)
-      .setOffset(0, 24);
+      .setSize(16, 20);
     
     this.physics.add.collider(player, worldLayer);
 
@@ -137,7 +136,6 @@ const WorldScene = new Phaser.Class({
 
   update: function (time, delta) {
     const speed = 100;
-    const prevVelocity = player.body.velocity.clone();
 
     // Stop any previous movement from the last frame
     player.body.setVelocity(0);
@@ -173,13 +171,6 @@ const WorldScene = new Phaser.Class({
     } else {
       player.anims.stop();
     }
-
-    //   // If we were moving, pick and idle frame to use
-    //   if (prevVelocity.x < 0) player.setTexture('scientist', 2);
-    //   else if (prevVelocity.x > 0) player.setTexture('scientist', 2);
-    //   else if (prevVelocity.y < 0) player.setTexture('scientist', 1);
-    //   else if (prevVelocity.y > 0) player.setTexture('scientist', 0);
-    // }
   }
 });
 
