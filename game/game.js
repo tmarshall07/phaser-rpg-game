@@ -10,7 +10,10 @@ const BootScene = new Phaser.Class({
 
   // Load game-wide assets
   preload: function () {
-    this.load.atlas('atlas', '../assets/characters/kat/atlas.png', '../assets/characters/kat/atlas.json');
+    this.load.spritesheet('scientist', '../assets/characters/scientist/scientist.png', {
+      frameWidth: 24,
+      frameHeight: 24
+    });
   },
 
   // Start up the world scene
@@ -33,8 +36,8 @@ const WorldScene = new Phaser.Class({
   },
 
   preload: function () {
-    this.load.image('tiles', '../assets/maps/map-1.png');
-    this.load.tilemapTiledJSON('map', '../assets/maps/map-1.json');  
+    this.load.image('tiles', '../assets/tilesets/terrain.png');
+    this.load.tilemapTiledJSON('map', '../assets/maps/map-3.json');  
   },
 
   create: function () {
@@ -42,7 +45,7 @@ const WorldScene = new Phaser.Class({
     const map = this.make.tilemap({ key: 'map' });
 
     // Tileset used for this map
-    const tileset = map.addTilesetImage('map-1', 'tiles');
+    const tileset = map.addTilesetImage('terrain', 'tiles');
     
     // Map layers
     const belowLayer = map.createStaticLayer('below', tileset, 0, 0);
@@ -59,9 +62,8 @@ const WorldScene = new Phaser.Class({
     const spawnPoint = map.findObject('objects', obj => obj.name === 'Spawn Point');
 
     player = this.physics.add
-      .sprite(spawnPoint.x, spawnPoint.y, 'atlas', 'misa-front')
-      .setSize(30, 40)
-      .setOffset(0, 24);
+      .sprite(spawnPoint.x, spawnPoint.y, 'scientist')
+      .setSize(16, 20);
     
     this.physics.add.collider(player, worldLayer);
 
@@ -69,27 +71,30 @@ const WorldScene = new Phaser.Class({
     // animation manager so any sprite can access them.
     const anims = this.anims;
     anims.create({
-      key: "misa-left-walk",
-      frames: anims.generateFrameNames("atlas", { prefix: "misa-left-walk.", start: 0, end: 3, zeroPad: 3 }),
-      frameRate: 10,
+      key: 'walk-left',
+      frames: this.anims.generateFrameNumbers('scientist', {
+        start: 8,
+        end: 9
+      }),
+      frameRate: 5,
       repeat: -1
     });
     anims.create({
-      key: "misa-right-walk",
-      frames: anims.generateFrameNames("atlas", { prefix: "misa-right-walk.", start: 0, end: 3, zeroPad: 3 }),
-      frameRate: 10,
+      key: "walk-down",
+      frames: this.anims.generateFrameNumbers('scientist', {
+        start: 4,
+        end: 5,
+      }),
+      frameRate: 5,
       repeat: -1
     });
     anims.create({
-      key: "misa-front-walk",
-      frames: anims.generateFrameNames("atlas", { prefix: "misa-front-walk.", start: 0, end: 3, zeroPad: 3 }),
-      frameRate: 10,
-      repeat: -1
-    });
-    anims.create({
-      key: "misa-back-walk",
-      frames: anims.generateFrameNames("atlas", { prefix: "misa-back-walk.", start: 0, end: 3, zeroPad: 3 }),
-      frameRate: 10,
+      key: "walk-up",
+      frames: this.anims.generateFrameNumbers('scientist', {
+        start: 6,
+        end: 7,
+      }),
+      frameRate: 5,
       repeat: -1
     });
     
@@ -97,6 +102,7 @@ const WorldScene = new Phaser.Class({
     const camera = this.cameras.main;
     camera.startFollow(player);
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+    camera.zoom = 2;
 
     // Set up the arrows to control the camera
     cursors = this.input.keyboard.createCursorKeys();
@@ -115,6 +121,7 @@ const WorldScene = new Phaser.Class({
     this.input.keyboard.once("keydown_D", event => {
       // Turn on physics debugging to show player's hitbox
       this.physics.world.createDebugGraphic();
+      console.log(this.physics.world);
   
       // Create worldLayer collision graphic above the player, but below the help text
       const graphics = this.add
@@ -130,8 +137,7 @@ const WorldScene = new Phaser.Class({
   },
 
   update: function (time, delta) {
-    const speed = 175;
-    const prevVelocity = player.body.velocity.clone();
+    const speed = 100;
 
     // Stop any previous movement from the last frame
     player.body.setVelocity(0);
@@ -155,21 +161,17 @@ const WorldScene = new Phaser.Class({
 
     // Update the animation last and give left/right animations precedence over up/down animations
     if (cursors.left.isDown) {
-      player.anims.play("misa-left-walk", true);
+      player.anims.play("walk-left", true);
+      player.flipX = false;
     } else if (cursors.right.isDown) {
-      player.anims.play("misa-right-walk", true);
+      player.anims.play("walk-left", true);
+      player.flipX = true;
     } else if (cursors.up.isDown) {
-      player.anims.play("misa-back-walk", true);
+      player.anims.play("walk-up", true);
     } else if (cursors.down.isDown) {
-      player.anims.play("misa-front-walk", true);
+      player.anims.play("walk-down", true);
     } else {
       player.anims.stop();
-
-      // If we were moving, pick and idle frame to use
-      if (prevVelocity.x < 0) player.setTexture("atlas", "misa-left");
-      else if (prevVelocity.x > 0) player.setTexture("atlas", "misa-right");
-      else if (prevVelocity.y < 0) player.setTexture("atlas", "misa-back");
-      else if (prevVelocity.y > 0) player.setTexture("atlas", "misa-front");
     }
   }
 });
