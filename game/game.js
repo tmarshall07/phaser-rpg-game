@@ -74,9 +74,9 @@ const WorldScene = new Phaser.Class({
       key: 'walk-left',
       frames: this.anims.generateFrameNumbers('scientist', {
         start: 8,
-        end: 9
+        end: 10,
       }),
-      frameRate: 5,
+      frameRate: 10,
       repeat: -1
     });
     anims.create({

@@ -78,6 +78,14 @@
     "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
     "sourceSize": { "w": 24, "h": 24 },
     "duration": 100
+   },
+   "scientist 10.aseprite": {
+    "frame": { "x": 240, "y": 0, "w": 24, "h": 24 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
+    "sourceSize": { "w": 24, "h": 24 },
+    "duration": 100
    }
  },
  "meta": {
@@ -85,7 +93,7 @@
   "version": "1.2.9",
   "image": "/Users/tannermarshall/Dev/phaser-game/assets/characters/scientist/scientist.png",
   "format": "RGBA8888",
-  "size": { "w": 240, "h": 24 },
+  "size": { "w": 264, "h": 24 },
   "scale": "1",
   "frameTags": [
   ],
